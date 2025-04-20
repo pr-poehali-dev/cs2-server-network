@@ -3,7 +3,6 @@ import { useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ServerCard from '@/components/ServerCard';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Search } from 'lucide-react';
@@ -22,65 +21,14 @@ const Servers = () => {
       ip: '185.189.255.62:27075',
       isPopular: true,
       type: 'classic'
-    },
-    {
-      id: 2,
-      name: 'MN Project | AWP',
-      mode: 'AWP Only',
-      map: 'awp_india',
-      players: { current: 12, max: 24 },
-      ip: '185.189.255.62:27076',
-      isPopular: false,
-      type: 'awp'
-    },
-    {
-      id: 3,
-      name: 'MN Project | Retake',
-      mode: 'Retake',
-      map: 'de_mirage',
-      players: { current: 8, max: 16 },
-      ip: '185.189.255.62:27077',
-      isPopular: false,
-      type: 'retake'
-    },
-    {
-      id: 4,
-      name: 'MN Project | Surf',
-      mode: 'Surf',
-      map: 'surf_utopia',
-      players: { current: 14, max: 24 },
-      ip: '185.189.255.62:27078',
-      isPopular: false,
-      type: 'surf'
-    },
-    {
-      id: 5,
-      name: 'MN Project | Classic #2',
-      mode: 'Classic',
-      map: 'de_mirage',
-      players: { current: 22, max: 32 },
-      ip: '185.189.255.62:27079',
-      isPopular: false,
-      type: 'classic'
-    },
-    {
-      id: 6,
-      name: 'MN Project | Zombie',
-      mode: 'Zombie Escape',
-      map: 'ze_FFVII_Mako_Reactor',
-      players: { current: 18, max: 32 },
-      ip: '185.189.255.62:27080',
-      isPopular: true,
-      type: 'zombie'
-    },
+    }
   ];
 
-  const filterServers = (servers, query, type = 'all') => {
+  const filterServers = (servers, query) => {
+    if (!query) return servers;
     return servers.filter(server => {
-      const matchesQuery = server.name.toLowerCase().includes(query.toLowerCase()) ||
-                          server.map.toLowerCase().includes(query.toLowerCase());
-      const matchesType = type === 'all' || server.type === type;
-      return matchesQuery && matchesType;
+      return server.name.toLowerCase().includes(query.toLowerCase()) ||
+             server.map.toLowerCase().includes(query.toLowerCase());
     });
   };
 
@@ -90,9 +38,9 @@ const Servers = () => {
       <main className="flex-1 pt-24 pb-16">
         <div className="container px-4">
           <div className="mb-12">
-            <h1 className="text-4xl font-bold mb-4">Наши <span className="gradient-text">серверы</span></h1>
+            <h1 className="text-4xl font-bold mb-4">Наш <span className="gradient-text">сервер</span></h1>
             <p className="text-muted-foreground max-w-3xl">
-              Выбирай любой сервер по вкусу. Разнообразные режимы и карты не дадут тебе заскучать. Присоединяйся к игре прямо сейчас!
+              Присоединяйся к нашему серверу и ощути настоящий классический геймплей CS2. Мы создали идеальную площадку для ценителей соревновательного режима.
             </p>
           </div>
 
@@ -108,124 +56,19 @@ const Servers = () => {
             </div>
           </div>
 
-          <Tabs defaultValue="all" className="mb-12">
-            <TabsList className="mb-8 bg-gaming-dark/30 p-1">
-              <TabsTrigger value="all" className="data-[state=active]:bg-gaming data-[state=active]:text-white">
-                Все серверы
-              </TabsTrigger>
-              <TabsTrigger value="classic" className="data-[state=active]:bg-gaming data-[state=active]:text-white">
-                Classic
-              </TabsTrigger>
-              <TabsTrigger value="awp" className="data-[state=active]:bg-gaming data-[state=active]:text-white">
-                AWP
-              </TabsTrigger>
-              <TabsTrigger value="retake" className="data-[state=active]:bg-gaming data-[state=active]:text-white">
-                Retake
-              </TabsTrigger>
-              <TabsTrigger value="surf" className="data-[state=active]:bg-gaming data-[state=active]:text-white">
-                Surf
-              </TabsTrigger>
-              <TabsTrigger value="zombie" className="data-[state=active]:bg-gaming data-[state=active]:text-white">
-                Zombie
-              </TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="all">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filterServers(servers, searchQuery).map((server) => (
-                  <ServerCard
-                    key={server.id}
-                    name={server.name}
-                    mode={server.mode}
-                    map={server.map}
-                    players={server.players}
-                    ip={server.ip}
-                    isPopular={server.isPopular}
-                  />
-                ))}
-              </div>
-            </TabsContent>
-
-            <TabsContent value="classic">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filterServers(servers, searchQuery, 'classic').map((server) => (
-                  <ServerCard
-                    key={server.id}
-                    name={server.name}
-                    mode={server.mode}
-                    map={server.map}
-                    players={server.players}
-                    ip={server.ip}
-                    isPopular={server.isPopular}
-                  />
-                ))}
-              </div>
-            </TabsContent>
-
-            <TabsContent value="awp">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filterServers(servers, searchQuery, 'awp').map((server) => (
-                  <ServerCard
-                    key={server.id}
-                    name={server.name}
-                    mode={server.mode}
-                    map={server.map}
-                    players={server.players}
-                    ip={server.ip}
-                    isPopular={server.isPopular}
-                  />
-                ))}
-              </div>
-            </TabsContent>
-            
-            <TabsContent value="retake">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filterServers(servers, searchQuery, 'retake').map((server) => (
-                  <ServerCard
-                    key={server.id}
-                    name={server.name}
-                    mode={server.mode}
-                    map={server.map}
-                    players={server.players}
-                    ip={server.ip}
-                    isPopular={server.isPopular}
-                  />
-                ))}
-              </div>
-            </TabsContent>
-            
-            <TabsContent value="surf">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filterServers(servers, searchQuery, 'surf').map((server) => (
-                  <ServerCard
-                    key={server.id}
-                    name={server.name}
-                    mode={server.mode}
-                    map={server.map}
-                    players={server.players}
-                    ip={server.ip}
-                    isPopular={server.isPopular}
-                  />
-                ))}
-              </div>
-            </TabsContent>
-            
-            <TabsContent value="zombie">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filterServers(servers, searchQuery, 'zombie').map((server) => (
-                  <ServerCard
-                    key={server.id}
-                    name={server.name}
-                    mode={server.mode}
-                    map={server.map}
-                    players={server.players}
-                    ip={server.ip}
-                    isPopular={server.isPopular}
-                  />
-                ))}
-              </div>
-            </TabsContent>
-          </Tabs>
+          <div className="max-w-md mx-auto mb-12">
+            {filterServers(servers, searchQuery).map((server) => (
+              <ServerCard
+                key={server.id}
+                name={server.name}
+                mode={server.mode}
+                map={server.map}
+                players={server.players}
+                ip={server.ip}
+                isPopular={server.isPopular}
+              />
+            ))}
+          </div>
 
           <div className="mt-12 p-6 rounded-lg bg-gaming-dark/30 border border-gaming/20">
             <h3 className="text-xl font-bold mb-4">Как подключиться к серверу?</h3>
