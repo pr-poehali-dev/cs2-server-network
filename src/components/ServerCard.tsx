@@ -4,20 +4,25 @@ import { Badge } from '@/components/ui/badge';
 import { Users } from 'lucide-react';
 
 interface ServerCardProps {
-  name: string;
-  mode: string;
-  map: string;
-  players: {
-    current: number;
-    max: number;
-  };
-  ip: string;
-  isPopular?: boolean;
+  server: {
+    id: number;
+    name: string;
+    map: string;
+    players: string;
+    address: string;
+    type: string;
+    isPopular?: boolean;
+  }
 }
 
-const ServerCard = ({ name, mode, map, players, ip, isPopular = false }: ServerCardProps) => {
+const ServerCard = ({ server }: ServerCardProps) => {
+  const { name, map, players, address, type, isPopular = false } = server;
+  
+  // Парсинг строки players (формат "18/20")
+  const [current, max] = players.split('/').map(Number);
+  
   const copyIp = () => {
-    navigator.clipboard.writeText(ip);
+    navigator.clipboard.writeText(address);
     // В реальном проекте здесь можно добавить уведомление о копировании
   };
 
@@ -32,7 +37,7 @@ const ServerCard = ({ name, mode, map, players, ip, isPopular = false }: ServerC
       <h3 className="text-xl font-bold text-white mb-2">{name}</h3>
       <div className="mb-4 flex flex-wrap gap-2">
         <Badge variant="outline" className="bg-gaming/10 text-gaming-light">
-          {mode}
+          {type}
         </Badge>
         <Badge variant="outline" className="bg-gaming/10 text-gaming-light">
           {map}
@@ -44,17 +49,17 @@ const ServerCard = ({ name, mode, map, players, ip, isPopular = false }: ServerC
         <div className="h-2 w-full bg-secondary rounded-full overflow-hidden">
           <div 
             className="h-full bg-gradient-to-r from-gaming to-gaming-accent animate-pulse-slow"
-            style={{ width: `${(players.current / players.max) * 100}%` }}
+            style={{ width: `${(current / max) * 100}%` }}
           />
         </div>
         <span className="ml-2 text-sm text-muted-foreground">
-          {players.current}/{players.max}
+          {players}
         </span>
       </div>
       
       <div className="flex items-center justify-between">
         <div className="text-sm text-muted-foreground">
-          IP: <span className="font-mono text-white">{ip}</span>
+          IP: <span className="font-mono text-white">{address}</span>
         </div>
         <Button 
           size="sm" 
