@@ -17,9 +17,12 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     port: 5173,
-    allowedHosts: true,
     hmr: {
-      overlay: false // Disables the error overlay if you only want console errors
+      // Позволяет HMR работать через прокси
+      clientPort: 443,
+      host: 'preview--cs2-server-network.poehali.dev',
+      protocol: 'wss',
+      overlay: false // Отключает наложение ошибок, показывая их только в консоли
     }
   },
 });
